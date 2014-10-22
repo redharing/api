@@ -11,13 +11,13 @@ namespace Helper
     public class Manga
     {
         //private const string url = "http://www.niceoppai.net/naruto/696/?all";
-        private const string url = "http://www.niceoppai.net/onepiece/735/?all";
+        private const string url = "http://www.niceoppai.net/{0}/{1}/?all";
 
-        
-        public IList<string> GetImageByManga(string Name)
+
+        public IList<string> GetImageByManga(string Name, int chapter)
         {
             IList<string> images = new List<string>();
-            var html = getHtml();
+            var html = getHtml(Name, chapter);
 
             var htmlDoc = new HtmlDocument();
 
@@ -31,16 +31,17 @@ namespace Helper
 
 
             var imageDom = k[0].SelectNodes("//img");
-            foreach (var image in imageDom)
+            if (imageDom != null)
             {
-                images.Add(image.Attributes["src"].Value);
+                foreach (var image in imageDom)
+                {
+                    images.Add(image.Attributes["src"].Value);
+                }
             }
-
-            //var image = 
             return images;
         }
 
-        public string getHtml()
+        public string getHtml(string mangaName, int chapter)
         {
             WebClient c = new WebClient();
             c.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
@@ -48,8 +49,7 @@ namespace Helper
             string result = string.Empty;
             try
             {
-                result = c.DownloadString(new Uri(url));
-
+                result = c.DownloadString(new Uri(string.Format(url, mangaName, chapter)));
             }
             catch (Exception ex)
             {

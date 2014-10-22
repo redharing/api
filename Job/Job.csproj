@@ -32,8 +32,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,11 +50,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="data.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>data.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="data.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>data.tt</DependentUpon>
+    </Compile>
+    <Compile Include="data.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>data.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Manga.cs">
+      <DependentUpon>data.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MangaChapter.cs">
+      <DependentUpon>data.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MangaImage.cs">
+      <DependentUpon>data.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="data.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>data.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="data.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>data.edmx</DependentUpon>
+      <LastGenOutput>data.Context.cs</LastGenOutput>
+    </None>
+    <None Include="data.edmx.diagram">
+      <DependentUpon>data.edmx</DependentUpon>
+    </None>
+    <None Include="data.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>data.edmx</DependentUpon>
+      <LastGenOutput>data.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{04b43476-5707-48f8-8f7f-8e2c3c67a189}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

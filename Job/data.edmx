@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="mangaModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="mangaModelStoreContainer">
+          <EntitySet Name="Manga" EntityType="mangaModel.Store.Manga" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="MangaChapter" EntityType="mangaModel.Store.MangaChapter" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="MangaImage" EntityType="mangaModel.Store.MangaImage" store:Type="Tables" Schema="dbo" />
+        </EntityContainer>
+        <EntityType Name="Manga">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="500" />
+          <Property Name="ImagePath" Type="nvarchar" MaxLength="1000" />
+          <Property Name="IsEnable" Type="bit" Nullable="false" />
+          <Property Name="NameDisplay" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MangaChapter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MangaId" Type="int" Nullable="false" />
+          <Property Name="ChapterId" Type="int" Nullable="false" />
+          <Property Name="ChapterName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ChapterImagePath" Type="nvarchar" MaxLength="1000" />
+          <Property Name="IsEnable" Type="bit" />
+        </EntityType>
+        <EntityType Name="MangaImage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MangaId" Type="int" Nullable="false" />
+          <Property Name="Chapter" Type="int" Nullable="false" />
+          <Property Name="Page" Type="int" Nullable="false" />
+          <Property Name="ImagePath" Type="nvarchar" Nullable="false" MaxLength="1000" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="mangaModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="mangaEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Mangas" EntityType="mangaModel.Manga" />
+          <EntitySet Name="MangaChapters" EntityType="mangaModel.MangaChapter" />
+          <EntitySet Name="MangaImages" EntityType="mangaModel.MangaImage" />
+        </EntityContainer>
+        <EntityType Name="Manga">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImagePath" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsEnable" Nullable="false" />
+          <Property Type="String" Name="NameDisplay" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MangaChapter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="MangaId" Nullable="false" />
+          <Property Type="Int32" Name="ChapterId" Nullable="false" />
+          <Property Type="String" Name="ChapterName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ChapterImagePath" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsEnable" />
+        </EntityType>
+        <EntityType Name="MangaImage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="MangaId" Nullable="false" />
+          <Property Type="Int32" Name="Chapter" Nullable="false" />
+          <Property Type="Int32" Name="Page" Nullable="false" />
+          <Property Type="String" Name="ImagePath" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="mangaModelStoreContainer" CdmEntityContainer="mangaEntities">
+          <EntitySetMapping Name="Mangas">
+            <EntityTypeMapping TypeName="mangaModel.Manga">
+              <MappingFragment StoreEntitySet="Manga">
+                <ScalarProperty Name="NameDisplay" ColumnName="NameDisplay" />
+                <ScalarProperty Name="IsEnable" ColumnName="IsEnable" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MangaChapters">
+            <EntityTypeMapping TypeName="mangaModel.MangaChapter">
+              <MappingFragment StoreEntitySet="MangaChapter">
+                <ScalarProperty Name="IsEnable" ColumnName="IsEnable" />
+                <ScalarProperty Name="ChapterImagePath" ColumnName="ChapterImagePath" />
+                <ScalarProperty Name="ChapterName" ColumnName="ChapterName" />
+                <ScalarProperty Name="ChapterId" ColumnName="ChapterId" />
+                <ScalarProperty Name="MangaId" ColumnName="MangaId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MangaImages">
+            <EntityTypeMapping TypeName="mangaModel.MangaImage">
+              <MappingFragment StoreEntitySet="MangaImage">
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="Page" ColumnName="Page" />
+                <ScalarProperty Name="Chapter" ColumnName="Chapter" />
+                <ScalarProperty Name="MangaId" ColumnName="MangaId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
