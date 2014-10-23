@@ -15,11 +15,11 @@ namespace API.Controllers
 
         public IList<string> Get()
         {
-            if (_isValid)
-            {
-                var manga = new Manga();
-                return manga.GetImageByManga("naruto");
-            }
+            //if (_isValid)
+            //{
+            //    var manga = new Manga();
+            //    return manga.GetImageByManga("naruto");
+            //}
             return null;
         }
 

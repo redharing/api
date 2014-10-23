@@ -4,27 +4,22 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="mangaModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityContainer Name="mangaModelStoreContainer">
-          <EntitySet Name="Manga" EntityType="mangaModel.Store.Manga" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="MangaChapter" EntityType="mangaModel.Store.MangaChapter" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="MangaImage" EntityType="mangaModel.Store.MangaImage" store:Type="Tables" Schema="dbo" />
-        </EntityContainer>
+    <Schema Namespace="mangaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Manga">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="500" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="ImagePath" Type="nvarchar" MaxLength="1000" />
           <Property Name="IsEnable" Type="bit" Nullable="false" />
-          <Property Name="NameDisplay" Type="nvarchar" MaxLength="50" />
+          <Property Name="NameDisplay" Type="ntext" />
         </EntityType>
         <EntityType Name="MangaChapter">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MangaId" Type="int" Nullable="false" />
           <Property Name="ChapterId" Type="int" Nullable="false" />
           <Property Name="ChapterName" Type="nvarchar" MaxLength="50" />
@@ -35,12 +30,17 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MangaId" Type="int" Nullable="false" />
           <Property Name="Chapter" Type="int" Nullable="false" />
           <Property Name="Page" Type="int" Nullable="false" />
-          <Property Name="ImagePath" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="ImagePath" Type="nvarchar" MaxLength="1000" Nullable="false" />
         </EntityType>
+        <EntityContainer Name="mangaModelStoreContainer">
+          <EntitySet Name="Manga" EntityType="Self.Manga" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MangaChapter" EntityType="Self.MangaChapter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MangaImage" EntityType="Self.MangaImage" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -54,32 +54,32 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ImagePath" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="IsEnable" Nullable="false" />
-          <Property Type="String" Name="NameDisplay" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ImagePath" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="IsEnable" Type="Boolean" Nullable="false" />
+          <Property Name="NameDisplay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MangaChapter">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="MangaId" Nullable="false" />
-          <Property Type="Int32" Name="ChapterId" Nullable="false" />
-          <Property Type="String" Name="ChapterName" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ChapterImagePath" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="IsEnable" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MangaId" Type="Int32" Nullable="false" />
+          <Property Name="ChapterId" Type="Int32" Nullable="false" />
+          <Property Name="ChapterName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ChapterImagePath" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="IsEnable" Type="Boolean" />
         </EntityType>
         <EntityType Name="MangaImage">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="MangaId" Nullable="false" />
-          <Property Type="Int32" Name="Chapter" Nullable="false" />
-          <Property Type="Int32" Name="Page" Nullable="false" />
-          <Property Type="String" Name="ImagePath" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MangaId" Type="Int32" Nullable="false" />
+          <Property Name="Chapter" Type="Int32" Nullable="false" />
+          <Property Name="Page" Type="Int32" Nullable="false" />
+          <Property Name="ImagePath" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -138,6 +138,7 @@
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
