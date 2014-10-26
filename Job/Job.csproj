@@ -50,52 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="data.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>data.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="data.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>data.tt</DependentUpon>
-    </Compile>
-    <Compile Include="data.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>data.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Manga.cs">
-      <DependentUpon>data.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MangaChapter.cs">
-      <DependentUpon>data.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MangaImage.cs">
-      <DependentUpon>data.tt</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="data.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>data.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="data.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>data.edmx</DependentUpon>
-      <LastGenOutput>data.Context.cs</LastGenOutput>
-    </None>
-    <None Include="data.edmx.diagram">
-      <DependentUpon>data.edmx</DependentUpon>
-    </None>
-    <None Include="data.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>data.edmx</DependentUpon>
-      <LastGenOutput>data.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +64,10 @@
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{04b43476-5707-48f8-8f7f-8e2c3c67a189}</Project>
       <Name>Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{aa471571-ff69-48cd-bdb2-5abbf1e64da6}</Project>
+      <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

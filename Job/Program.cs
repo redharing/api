@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +13,7 @@ namespace Job
         static IList<Manga> ms = new List<Manga>();
         static void Main(string[] args)
         {
-            getlastestManga();
+            
             //for (int i = 3; i <= 21; i++)
             //{
             //    Console.WriteLine(i);
@@ -24,47 +26,61 @@ namespace Job
             //    ctx.SaveChanges();
             //}
 
-            //using (var ctx = new Job.mangaEntities())
-            //{
-            //    int webType = 0;
-            //    var mangaAll = (from all in ctx.Mangas
-            //                   where all.Id > 96
-            //                   select all).ToList();
-            //    IList<MangaImage> mangaImage = new List<MangaImage>();
-            //    foreach (var m in mangaAll)
-            //    {
-            //        var manganame = m.Name;
-            //        int end = 100;
-            //        var helper = new Helper.Manga();
-            //        Console.WriteLine(m.Name);
-            //        for (int i = 0; i < end; i++)
-            //        {
-            //            var images = helper.GetImageByManga(manganame, end - i, webType);
-            //            for (int j = 0; j < images.Count; j++)
-            //            {
-            //                var result = new MangaImage()
-            //                {
-            //                    MangaId = m.Id,
-            //                    Chapter = end - i,
-            //                    Page = j + 1,
-            //                    ImagePath = images[j]
-            //                };
-            //                mangaImage.Add(result);
-            //            }
-            //        }
-            //        ctx.MangaImages.AddRange(mangaImage);
-            //        ctx.SaveChanges();
-            //        mangaImage.Clear();
-            //    }
-                
-            //}
+            using (var ctx = new Model.mangaEntities())
+            {
+                int webType = 0;
+                var mangaAll = (from all in ctx.Manga
+                                where all.Id > 92
+                                orderby all.Id
+                                select all).ToList();
+                IList<MangaImage> mangaImage = new List<MangaImage>();
+                IList<MangaChapter> mangachapter = new List<MangaChapter>();
+                foreach (var m in mangaAll)
+                {
+                    var helper = new Helper.Manga();
+                    var manganame = m.Name;
+                    var mangaid = m.Id;
+
+
+                    mangachapter = helper.getChapterByManga(manganame, mangaid);
+                    //double end = Convert.ToInt32(helper.getLastestByManga(manganame));
+                    Console.WriteLine(m.Name);
+                    //if (end == 0)
+                    //{
+                    //    Console.WriteLine(m.Name + " not found");
+                    //}
+
+                    
+                    //for (int i = 0; i <= end; i++)
+                    //{
+                    //    Console.Write("\r{0}/{1}   ", i,end);
+                    //    var images = helper.GetImageByManga(manganame, end - i, webType);
+                    //    for (int j = 0; j < images.Count; j++)
+                    //    {
+                    //        var result = new MangaImage()
+                    //        {
+                    //            MangaId = m.Id,
+                    //            Chapter = Convert.ToInt32(end) - i,
+                    //            Page = j + 1,
+                    //            ImagePath = images[j]
+                    //        };
+                    //        mangaImage.Add(result);
+                    //    }
+                    //}
+                    ctx.MangaChapter.AddRange(mangachapter);
+                    ctx.SaveChanges();
+                    Console.WriteLine(mangachapter.Count);
+                    mangachapter.Clear();
+                }
+
+            }
         }
 
         static void getlastestManga()
         {
             var helper = new Helper.Manga();
 
-            int result = helper.getLastestByManga("onepiece");
+            double result = helper.getLastestByManga("onepiece");
 
 
         }
@@ -86,6 +102,21 @@ namespace Job
                 ms.Add(m);
             }
             Console.WriteLine(result.Count);
+        }
+
+        public static void Log(string logMessage)
+        {
+            if (!string.IsNullOrEmpty(logMessage.Trim()))
+            {
+                var logFilePath = File.AppendText("c:\\job\\log.txt");
+                logFilePath.AutoFlush = true;
+                logFilePath.Write("\r\nLog Entry : ");
+                logFilePath.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(),
+                    DateTime.Now.ToLongDateString());
+                logFilePath.WriteLine("  :{0}", logMessage);
+                logFilePath.WriteLine("-------------------------------");
+                logFilePath.Close();
+            }
         }
     }
 }

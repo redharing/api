@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Helper
         private const string url = "http://www.niceoppai.net/{0}/{1}/?all";
         private const string urlThaiCartoon = "http://www.thai-cartoon.com/read-{0}-chapter-{1}.html";
 
-        public IList<string> GetImageByManga(string Name, int chapter, int webType)
+        public IList<string> GetImageByManga(string Name, double chapter, int webType)
         {
             IList<string> images = new List<string>();
 
@@ -46,7 +47,7 @@ namespace Helper
             return images;
         }
 
-        public string getHtml(string mangaName, int chapter, int web)
+        public string getHtml(string mangaName, double chapter, int web)
         {
             WebClient c = new WebClient();
             c.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
@@ -79,8 +80,8 @@ namespace Helper
             string result = string.Empty;
             try
             {
+                c.Encoding = Encoding.UTF8;
                 result = c.DownloadString(new Uri(url));
-
             }
             catch (Exception ex)
             {
@@ -162,9 +163,9 @@ namespace Helper
             }
         }
 
-        public int getLastestByManga(string MangaName)
+        public double getLastestByManga(string MangaName)
         {
-            int chapter = -1;
+            double chapter = -1;
             var domain = "http://www.niceoppai.net/{0}";
             var url = string.Format(domain, MangaName);
             var html = getHtmlByUrl(url);
@@ -183,41 +184,59 @@ namespace Helper
             if (li != null)
             {
                 var aManga = li.Descendants("a").FirstOrDefault();
-                var Mangahref = aManga.Attributes["href"].Value;
-                string chapterString = Mangahref.Substring(Mangahref.Length - 4, 3);
-                int.TryParse(chapterString, out chapter);
+                var Mangahref = aManga.Attributes["href"].Value.Trim();
+                int l = Mangahref.Split('/').Count();
+                string chapterString = Mangahref.Split('/')[l - 2];
+                double.TryParse(chapterString, out chapter);
             }
 
             return chapter;
         }
 
-        public int getChapterByManga(string MangaName)
+        public IList<MangaChapter> getChapterByManga(string MangaName, int Id)
         {
-            int chapter = -1;
-            var domain = "http://www.niceoppai.net/{0}";
-            var url = string.Format(domain, MangaName);
-            var html = getHtmlByUrl(url);
-
-            var htmlDoc = new HtmlDocument();
-
-            htmlDoc.LoadHtml(html);
-
-            var ul = htmlDoc.DocumentNode.Descendants("ul").Where(d =>
-                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("lst")
-                    ).FirstOrDefault();
-            var li = ul.Descendants("li").Where(d =>
-                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("lng_")
-                    ).FirstOrDefault();
-
-            if (li != null)
+            int pagemax = 4;
+            int chapter = 0;
+            IList<MangaChapter> c = new List<MangaChapter>();
+            for (var page = 1; page <= pagemax; page++)
             {
-                var aManga = li.Descendants("a").FirstOrDefault();
-                var Mangahref = aManga.Attributes["href"].Value;
-                string chapterString = Mangahref.Substring(Mangahref.Length - 4, 3);
-                int.TryParse(chapterString, out chapter);
-            }
+                var domain = "http://www.niceoppai.net/{0}/chapter-list/{1}/";
+                var url = string.Format(domain, MangaName,page);
+                var html = getHtmlByUrl(url);
 
-            return chapter;
+                var htmlDoc = new HtmlDocument();
+
+                htmlDoc.LoadHtml(html);
+
+                var ul = htmlDoc.DocumentNode.Descendants("ul").Where(d =>
+                            d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("lst")
+                        ).FirstOrDefault();
+                var li = ul.Descendants("li").Where(d =>
+                            d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("lng_")
+                        );
+
+                if (li != null)
+                {
+                    foreach (var l in li)
+                    {
+                        var aManga = l.Descendants("a").FirstOrDefault();
+                        var MangaChapterName = aManga.Attributes["title"].Value;
+                        var Mangahref = aManga.Attributes["href"].Value.Trim();
+                        string chapterString = Mangahref.Substring(Mangahref.Length - 4, 3);
+                        int.TryParse(chapterString, out chapter);
+
+                        var c1 = new MangaChapter()
+                        {
+                            MangaId = Id,
+                            ChapterId = chapter,
+                            ChapterName = MangaChapterName,
+                        };
+                        c.Add(c1);
+                    }
+                    
+                }
+            }
+            return c;
         }
     }
 }
