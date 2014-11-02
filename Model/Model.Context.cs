@@ -28,5 +28,6 @@ namespace Model
         public virtual DbSet<Manga> Manga { get; set; }
         public virtual DbSet<MangaChapter> MangaChapter { get; set; }
         public virtual DbSet<MangaImage> MangaImage { get; set; }
+        public virtual DbSet<NewReleaseManga> NewReleaseManga { get; set; }
     }
 }

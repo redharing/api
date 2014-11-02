@@ -13,7 +13,85 @@ namespace Job
         static IList<Manga> ms = new List<Manga>();
         static void Main(string[] args)
         {
-            
+            var helper = new Helper.Manga();
+            var mangaError = new List<Manga>();
+            var newReleases = new List<NewReleaseManga>();
+            using (var ctx = new Model.mangaEntities())
+            {
+                var mangaAll = (from all in ctx.Manga
+                                
+                                select all);
+                int mangaAllCount = mangaAll.Count();
+                int i = 1;
+                foreach (var m in mangaAll)
+                {
+                    Console.WriteLine("get html {1} r{0}  /{2}   ", i, m.Name, mangaAllCount);
+                    try
+                    {
+                        var newRelease = helper.getNewReleaseByMangaChapter(m);
+                        if (!newReleases.Exists(x => x.MangaId == newRelease.MangaId))
+                        {
+                            newReleases.Add(newRelease);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        mangaError.Add(m);
+                    }
+
+                    i++;
+                }
+
+                int j = 1;
+                foreach (var newRelease in newReleases)
+                {
+                    int mangaAllCount2 = newReleases.Count();
+
+                    if (newRelease != null)
+                    {
+                        Console.WriteLine("save {1} r{0}  /{2}   ", j, newRelease.MangaName, mangaAllCount2);
+                        var theLastest = ctx.NewReleaseManga.SingleOrDefault(r => r.MangaId == newRelease.MangaId);
+                        if (theLastest != null)
+                        {
+                            if (theLastest.Chapter != newRelease.Chapter)
+                            {
+                                theLastest.ChapterName = newRelease.ChapterName;
+                                theLastest.ChapterImagePath = newRelease.ChapterImagePath;
+                                theLastest.ModifyDate = newRelease.ModifyDate;
+                                var images = getMangaDetail(newRelease);
+                                if (images != null && images.Count > 0)
+                                {
+                                    theLastest.ChapterImagePath = images[0].ImagePath;
+                                    ctx.MangaImage.AddRange(images);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            theLastest = newRelease;
+                            var images = getMangaDetail(newRelease);
+                            if (images != null && images.Count > 0)
+                            {
+                                theLastest.ChapterImagePath = images[0].ImagePath;
+                                ctx.MangaImage.AddRange(images);
+                            }
+                            ctx.NewReleaseManga.Add(theLastest);
+                        }
+                    }
+                    try
+                    {
+                        ctx.SaveChanges();
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    
+                    j++;
+                }
+
+                Console.Write("Save All Success");
+            }
+
             //for (int i = 3; i <= 21; i++)
             //{
             //    Console.WriteLine(i);
@@ -26,63 +104,98 @@ namespace Job
             //    ctx.SaveChanges();
             //}
 
-            using (var ctx = new Model.mangaEntities())
-            {
-                int webType = 0;
-                var mangaAll = (from all in ctx.Manga
-                                where all.Id > 92
-                                orderby all.Id
-                                select all).ToList();
-                IList<MangaImage> mangaImage = new List<MangaImage>();
-                IList<MangaChapter> mangachapter = new List<MangaChapter>();
-                foreach (var m in mangaAll)
-                {
-                    var helper = new Helper.Manga();
-                    var manganame = m.Name;
-                    var mangaid = m.Id;
+            //using (var ctx = new Model.mangaEntities())
+            //{
+            //    int webType = 0;
+            //    var mangaAll = (from all in ctx.Manga
+            //                    where all.Id > 92
+            //                    orderby all.Id
+            //                    select all).ToList();
+            //    IList<MangaImage> mangaImage = new List<MangaImage>();
+            //    IList<MangaChapter> mangachapter = new List<MangaChapter>();
+            //    foreach (var m in mangaAll)
+            //    {
+            //        var helper = new Helper.Manga();
+            //        var manganame = m.Name;
+            //        var mangaid = m.Id;
 
 
-                    mangachapter = helper.getChapterByManga(manganame, mangaid);
-                    //double end = Convert.ToInt32(helper.getLastestByManga(manganame));
-                    Console.WriteLine(m.Name);
-                    //if (end == 0)
-                    //{
-                    //    Console.WriteLine(m.Name + " not found");
-                    //}
+            //        mangachapter = helper.getChapterByManga(manganame, mangaid);
+            //        //double end = Convert.ToInt32(helper.getLastestByManga(manganame));
+            //        Console.WriteLine(m.Name);
+            //        //if (end == 0)
+            //        //{
+            //        //    Console.WriteLine(m.Name + " not found");
+            //        //}
 
-                    
-                    //for (int i = 0; i <= end; i++)
-                    //{
-                    //    Console.Write("\r{0}/{1}   ", i,end);
-                    //    var images = helper.GetImageByManga(manganame, end - i, webType);
-                    //    for (int j = 0; j < images.Count; j++)
-                    //    {
-                    //        var result = new MangaImage()
-                    //        {
-                    //            MangaId = m.Id,
-                    //            Chapter = Convert.ToInt32(end) - i,
-                    //            Page = j + 1,
-                    //            ImagePath = images[j]
-                    //        };
-                    //        mangaImage.Add(result);
-                    //    }
-                    //}
-                    ctx.MangaChapter.AddRange(mangachapter);
-                    ctx.SaveChanges();
-                    Console.WriteLine(mangachapter.Count);
-                    mangachapter.Clear();
-                }
 
-            }
+            //        //for (int i = 0; i <= end; i++)
+            //        //{
+            //        //    Console.Write("\r{0}/{1}   ", i,end);
+            //        //    var images = helper.GetImageByManga(manganame, end - i, webType);
+            //        //    for (int j = 0; j < images.Count; j++)
+            //        //    {
+            //        //        var result = new MangaImage()
+            //        //        {
+            //        //            MangaId = m.Id,
+            //        //            Chapter = Convert.ToInt32(end) - i,
+            //        //            Page = j + 1,
+            //        //            ImagePath = images[j]
+            //        //        };
+            //        //        mangaImage.Add(result);
+            //        //    }
+            //        //}
+            //        ctx.MangaChapter.AddRange(mangachapter);
+            //        ctx.SaveChanges();
+            //        Console.WriteLine(mangachapter.Count);
+            //        mangachapter.Clear();
+            //    }
+
+            //}
         }
 
-        static void getlastestManga()
+        static void getlastestMangaChapter()
         {
             var helper = new Helper.Manga();
 
             double result = helper.getLastestByManga("onepiece");
 
 
+        }
+
+        static void getLastestManga()
+        {
+
+        }
+
+        static List<MangaImage> getMangaDetail(NewReleaseManga newRelease)
+        {
+            var helper = new Helper.Manga();
+            List<MangaImage> mangaDetail = new List<MangaImage>();
+            try
+            {
+
+                var images = helper.GetImageByManga(newRelease.MangaName, Convert.ToDouble(newRelease.Chapter), 0);
+                for (int k = 0; k < images.Count; k++)
+                {
+
+
+                    var result = new MangaImage()
+                    {
+                        MangaId = newRelease.MangaId,
+                        Chapter = Convert.ToInt32(newRelease.Chapter),
+                        Page = k + 1,
+                        ImagePath = images[k]
+                    };
+                    mangaDetail.Add(result);
+                }
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            return mangaDetail;
         }
 
         static void getManga(int page)

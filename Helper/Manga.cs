@@ -17,7 +17,7 @@ namespace Helper
 
         public IList<string> GetImageByManga(string Name, double chapter, int webType)
         {
-            IList<string> images = new List<string>();
+            List<string> images = new List<string>();
 
             var html = getHtml(Name, chapter, webType);
             if (webType == 1)
@@ -32,16 +32,20 @@ namespace Helper
             var centerDom = htmlDoc.DocumentNode.SelectNodes("//center");
 
             var k = htmlDoc.DocumentNode.Descendants("div").Where(d =>
-                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("wpm_pag")
+                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("wpm_pag mng_rdr")
                     ).ToList();
 
 
-            var imageDom = k[0].SelectNodes("//img");
+            var imageDom = k[0].Descendants("img");
             if (imageDom != null)
             {
                 foreach (var image in imageDom)
                 {
-                    images.Add(image.Attributes["src"].Value);
+                    string imagePath = image.Attributes["src"].Value;
+                    if (!images.Exists(x => x == imagePath))
+                    {
+                        images.Add(imagePath);
+                    }
                 }
             }
             return images;
@@ -193,6 +197,43 @@ namespace Helper
             return chapter;
         }
 
+        public NewReleaseManga getNewReleaseByMangaChapter(Model.Manga Manga)
+        {
+            double chapter = -1;
+            var domain = "http://www.niceoppai.net/{0}";
+            var url = string.Format(domain, Manga.Name);
+            var html = getHtmlByUrl(url);
+            var htmlDoc = new HtmlDocument();
+            NewReleaseManga newRelease = null;
+            htmlDoc.LoadHtml(html);
+
+            var ul = htmlDoc.DocumentNode.Descendants("ul").Where(d =>
+                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("lst")
+                    ).FirstOrDefault();
+            var li = ul.Descendants("li").Where(d =>
+                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("lng_")
+                    ).FirstOrDefault();
+
+            if (li != null)
+            {
+                var aManga = li.Descendants("a").FirstOrDefault();
+                var Mangahref = aManga.Attributes["href"].Value.Trim();
+                var MangaChapterName = aManga.Attributes["title"].Value.Trim();
+                int l = Mangahref.Split('/').Count();
+                string chapterString = Mangahref.Split('/')[l - 2];
+                newRelease = new NewReleaseManga()
+                {
+                    Chapter = chapterString,
+                    ChapterName = MangaChapterName,
+                    MangaId = Manga.Id,
+                    MangaName = Manga.Name,
+                    ModifyDate = DateTime.Now
+                };
+            }
+
+            return newRelease;
+        }
+
         public IList<MangaChapter> getChapterByManga(string MangaName, int Id)
         {
             int pagemax = 4;
@@ -201,7 +242,7 @@ namespace Helper
             for (var page = 1; page <= pagemax; page++)
             {
                 var domain = "http://www.niceoppai.net/{0}/chapter-list/{1}/";
-                var url = string.Format(domain, MangaName,page);
+                var url = string.Format(domain, MangaName, page);
                 var html = getHtmlByUrl(url);
 
                 var htmlDoc = new HtmlDocument();
@@ -233,7 +274,7 @@ namespace Helper
                         };
                         c.Add(c1);
                     }
-                    
+
                 }
             }
             return c;
