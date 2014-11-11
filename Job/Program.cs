@@ -19,7 +19,7 @@ namespace Job
             using (var ctx = new Model.mangaEntities())
             {
                 var mangaAll = (from all in ctx.Manga
-                                
+
                                 select all);
                 int mangaAllCount = mangaAll.Count();
                 int i = 1;
@@ -53,29 +53,27 @@ namespace Job
                         var theLastest = ctx.NewReleaseManga.SingleOrDefault(r => r.MangaId == newRelease.MangaId);
                         if (theLastest != null)
                         {
-                            if (theLastest.Chapter != newRelease.Chapter)
-                            {
-                                theLastest.ChapterName = newRelease.ChapterName;
-                                theLastest.ChapterImagePath = newRelease.ChapterImagePath;
-                                theLastest.ModifyDate = newRelease.ModifyDate;
-                                var images = getMangaDetail(newRelease);
-                                if (images != null && images.Count > 0)
-                                {
-                                    theLastest.ChapterImagePath = images[0].ImagePath;
-                                    ctx.MangaImage.AddRange(images);
-                                }
-                            }
+                            theLastest.ChapterName = newRelease.ChapterName;
+                            theLastest.ChapterImagePath = newRelease.ChapterImagePath;
+                            theLastest.ModifyDate = newRelease.ModifyDate;
+                            theLastest.Chapter = newRelease.Chapter;
+                            //var images = getMangaDetail(newRelease);
+                            //if (images != null && images.Count > 0)
+                            //{
+                            //    theLastest.ChapterImagePath = images[0].ImagePath;
+                            //    ctx.MangaImage.AddRange(images);
+                            //}
                         }
                         else
                         {
-                            theLastest = newRelease;
-                            var images = getMangaDetail(newRelease);
-                            if (images != null && images.Count > 0)
-                            {
-                                theLastest.ChapterImagePath = images[0].ImagePath;
-                                ctx.MangaImage.AddRange(images);
-                            }
-                            ctx.NewReleaseManga.Add(theLastest);
+                            //theLastest = newRelease;
+                            //var images = getMangaDetail(newRelease);
+                            //if (images != null && images.Count > 0)
+                            //{
+                            //    theLastest.ChapterImagePath = images[0].ImagePath;
+                            //    ctx.MangaImage.AddRange(images);
+                            //}
+                            ctx.NewReleaseManga.Add(newRelease);
                         }
                     }
                     try
@@ -85,7 +83,7 @@ namespace Job
                     catch (Exception)
                     {
                     }
-                    
+
                     j++;
                 }
 

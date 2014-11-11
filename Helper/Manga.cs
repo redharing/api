@@ -227,7 +227,8 @@ namespace Helper
                     ChapterName = MangaChapterName,
                     MangaId = Manga.Id,
                     MangaName = Manga.Name,
-                    ModifyDate = DateTime.Now
+                    ModifyDate = DateTime.Now,
+                    ChapterImagePath = Manga.ImagePath
                 };
             }
 
