@@ -11,16 +11,16 @@ namespace Job
     class Program
     {
         static IList<Manga> ms = new List<Manga>();
+        static Helper.Manga helper = new Helper.Manga();
         static void Main(string[] args)
         {
-            var helper = new Helper.Manga();
             var mangaError = new List<Manga>();
             var newReleases = new List<NewReleaseManga>();
             using (var ctx = new Model.mangaEntities())
             {
                 var mangaAll = (from all in ctx.Manga
 
-                                select all);
+                                select all).ToList();
                 int mangaAllCount = mangaAll.Count();
                 int i = 1;
                 foreach (var m in mangaAll)
@@ -29,9 +29,53 @@ namespace Job
                     try
                     {
                         var newRelease = helper.getNewReleaseByMangaChapter(m);
+                        
                         if (!newReleases.Exists(x => x.MangaId == newRelease.MangaId))
                         {
                             newReleases.Add(newRelease);
+                            
+                        }
+                        if (newRelease != null)
+                        {
+                            Console.WriteLine("save {1} r{0}  /{2}   ", i, newRelease.MangaName, mangaAllCount);
+                            var theLastest = ctx.NewReleaseManga.SingleOrDefault(r => r.MangaId == newRelease.MangaId);
+                            if (theLastest != null)
+                            {
+                                theLastest.ChapterName = newRelease.ChapterName;
+                                theLastest.ChapterImagePath = newRelease.ChapterImagePath;
+                                theLastest.ModifyDate = newRelease.ModifyDate;
+                                theLastest.Chapter = newRelease.Chapter;
+                                //var images = getMangaDetail(newRelease);
+                                //if (images != null && images.Count > 0)
+                                //{
+                                //    theLastest.ChapterImagePath = images[0].ImagePath;
+                                //    ctx.MangaImage.AddRange(images);
+                                //}
+                            }
+                            else
+                            {
+                                ctx.NewReleaseManga.Add(newRelease);
+                                
+                            }
+                            var images = helper.GetImageByManga(newRelease.MangaName, Convert.ToDouble(newRelease.Chapter), 0);
+                            for (int k = 0; k < images.Count; k++)
+                            {
+                                var result = new MangaImage()
+                                {
+                                    MangaId = newRelease.MangaId,
+                                    Chapter = Convert.ToInt32(newRelease.Chapter),
+                                    Page = k + 1,
+                                    ImagePath = images[k]
+                                };
+                                ctx.MangaImage.Add(result);
+                            }
+                        }
+                        try
+                        {
+                            ctx.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
                         }
                     }
                     catch (Exception ex)
@@ -40,51 +84,6 @@ namespace Job
                     }
 
                     i++;
-                }
-
-                int j = 1;
-                foreach (var newRelease in newReleases)
-                {
-                    int mangaAllCount2 = newReleases.Count();
-
-                    if (newRelease != null)
-                    {
-                        Console.WriteLine("save {1} r{0}  /{2}   ", j, newRelease.MangaName, mangaAllCount2);
-                        var theLastest = ctx.NewReleaseManga.SingleOrDefault(r => r.MangaId == newRelease.MangaId);
-                        if (theLastest != null)
-                        {
-                            theLastest.ChapterName = newRelease.ChapterName;
-                            theLastest.ChapterImagePath = newRelease.ChapterImagePath;
-                            theLastest.ModifyDate = newRelease.ModifyDate;
-                            theLastest.Chapter = newRelease.Chapter;
-                            //var images = getMangaDetail(newRelease);
-                            //if (images != null && images.Count > 0)
-                            //{
-                            //    theLastest.ChapterImagePath = images[0].ImagePath;
-                            //    ctx.MangaImage.AddRange(images);
-                            //}
-                        }
-                        else
-                        {
-                            //theLastest = newRelease;
-                            //var images = getMangaDetail(newRelease);
-                            //if (images != null && images.Count > 0)
-                            //{
-                            //    theLastest.ChapterImagePath = images[0].ImagePath;
-                            //    ctx.MangaImage.AddRange(images);
-                            //}
-                            ctx.NewReleaseManga.Add(newRelease);
-                        }
-                    }
-                    try
-                    {
-                        ctx.SaveChanges();
-                    }
-                    catch (Exception)
-                    {
-                    }
-
-                    j++;
                 }
 
                 Console.Write("Save All Success");
@@ -168,11 +167,9 @@ namespace Job
 
         static List<MangaImage> getMangaDetail(NewReleaseManga newRelease)
         {
-            var helper = new Helper.Manga();
             List<MangaImage> mangaDetail = new List<MangaImage>();
             try
             {
-
                 var images = helper.GetImageByManga(newRelease.MangaName, Convert.ToDouble(newRelease.Chapter), 0);
                 for (int k = 0; k < images.Count; k++)
                 {
