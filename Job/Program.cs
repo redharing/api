@@ -30,11 +30,6 @@ namespace Job
                     {
                         var newRelease = helper.getNewReleaseByMangaChapter(m);
                         
-                        if (!newReleases.Exists(x => x.MangaId == newRelease.MangaId))
-                        {
-                            newReleases.Add(newRelease);
-                            
-                        }
                         if (newRelease != null)
                         {
                             Console.WriteLine("save {1} r{0}  /{2}   ", i, newRelease.MangaName, mangaAllCount);
@@ -45,30 +40,30 @@ namespace Job
                                 theLastest.ChapterImagePath = newRelease.ChapterImagePath;
                                 theLastest.ModifyDate = newRelease.ModifyDate;
                                 theLastest.Chapter = newRelease.Chapter;
-                                //var images = getMangaDetail(newRelease);
-                                //if (images != null && images.Count > 0)
-                                //{
-                                //    theLastest.ChapterImagePath = images[0].ImagePath;
-                                //    ctx.MangaImage.AddRange(images);
-                                //}
                             }
                             else
                             {
                                 ctx.NewReleaseManga.Add(newRelease);
                                 
                             }
-                            var images = helper.GetImageByManga(newRelease.MangaName, Convert.ToDouble(newRelease.Chapter), 0);
-                            for (int k = 0; k < images.Count; k++)
-                            {
-                                var result = new MangaImage()
+                             var existing = ctx.MangaImage.Where(mi => mi.Chapter.ToString() == newRelease.Chapter && mi.MangaId == newRelease.MangaId).FirstOrDefault();
+                             if (existing != null)
+                             {
+                                 ctx.MangaImage.Remove(existing);
+                             } 
+                            
+                             var images = helper.GetImageByManga(newRelease.MangaName, Convert.ToDouble(newRelease.Chapter), 0);
+                                for (int k = 0; k < images.Count; k++)
                                 {
-                                    MangaId = newRelease.MangaId,
-                                    Chapter = Convert.ToInt32(newRelease.Chapter),
-                                    Page = k + 1,
-                                    ImagePath = images[k]
-                                };
-                                ctx.MangaImage.Add(result);
-                            }
+                                    var result = new MangaImage()
+                                    {
+                                        MangaId = newRelease.MangaId,
+                                        Chapter = Convert.ToInt32(newRelease.Chapter),
+                                        Page = k + 1,
+                                        ImagePath = images[k]
+                                    };
+                                    ctx.MangaImage.Add(result);
+                                }
                         }
                         try
                         {
