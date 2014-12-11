@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{000DC3F9-D8C1-4ABF-B774-CEC46607B604}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Job", "Job\Job.csproj", "{16064CE3-1458-463D-BCA4-AF4E1000D5C3}"
@@ -12,6 +10,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobThaiCartoon", "JobThaiCartoon\JobThaiCartoon.csproj", "{11C4D46F-1C4A-43EF-ACD0-09814FB1AB15}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{AA471571-FF69-48CD-BDB2-5ABBF1E64DA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetMangaSeed", "GetMangaSeed\GetMangaSeed.csproj", "{D634E117-B3F1-4F1C-9080-E9B01BF50F68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaModel", "MangaModel\MangaModel.csproj", "{EE3BE272-1B13-4938-8C85-CF76FF80B5FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,14 @@ Global
 		{AA471571-FF69-48CD-BDB2-5ABBF1E64DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA471571-FF69-48CD-BDB2-5ABBF1E64DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA471571-FF69-48CD-BDB2-5ABBF1E64DA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D634E117-B3F1-4F1C-9080-E9B01BF50F68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D634E117-B3F1-4F1C-9080-E9B01BF50F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D634E117-B3F1-4F1C-9080-E9B01BF50F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D634E117-B3F1-4F1C-9080-E9B01BF50F68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE3BE272-1B13-4938-8C85-CF76FF80B5FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE3BE272-1B13-4938-8C85-CF76FF80B5FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE3BE272-1B13-4938-8C85-CF76FF80B5FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE3BE272-1B13-4938-8C85-CF76FF80B5FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
