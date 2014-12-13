@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Model
+namespace MangaModel
 {
     using System;
     using System.Data.Entity;

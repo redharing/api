@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="mangaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="mangaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6013: The table/view 'manga.dbo.getcartoon-converted' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="getcartoon-converted">
@@ -96,24 +96,17 @@ warning 6013: The table/view 'manga.dbo.getcartoon-converted' does not have a pr
           <EntitySet Name="MangaSeedChapter" EntityType="Self.MangaSeedChapter" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MangaSeedImage" EntityType="Self.MangaSeedImage" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="mangaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="mangaEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Manga" EntityType="mangaModel.Manga" />
-          <EntitySet Name="MangaChapter" EntityType="mangaModel.MangaChapter" />
-          <EntitySet Name="MangaImage" EntityType="mangaModel.MangaImage" />
-          <EntitySet Name="MangaSeed" EntityType="mangaModel.MangaSeed" />
-          <EntitySet Name="MangaSeedChapter" EntityType="mangaModel.MangaSeedChapter" />
-          <EntitySet Name="MangaSeedImage" EntityType="mangaModel.MangaSeedImage" />
-        </EntityContainer>
         <EntityType Name="Manga">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ImagePath" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="IsEnable" Type="Boolean" Nullable="false" />
           <Property Name="NameDisplay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -137,7 +130,7 @@ warning 6013: The table/view 'manga.dbo.getcartoon-converted' does not have a pr
           <Property Name="MangaId" Type="Int32" Nullable="false" />
           <Property Name="Chapter" Type="Int32" Nullable="false" />
           <Property Name="Page" Type="Int32" Nullable="false" />
-          <Property Name="ImagePath" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ImagePath" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="MangaSeed">
           <Key>
@@ -172,10 +165,18 @@ warning 6013: The table/view 'manga.dbo.getcartoon-converted' does not have a pr
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MangaId" Type="Int32" Nullable="false" />
-          <Property Name="Chapter" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Chapter" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Page" Type="Int32" Nullable="false" />
-          <Property Name="ImagePath" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="ImagePath" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
+        <EntityContainer Name="mangaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Manga" EntityType="Self.Manga" />
+          <EntitySet Name="MangaChapter" EntityType="Self.MangaChapter" />
+          <EntitySet Name="MangaImage" EntityType="Self.MangaImage" />
+          <EntitySet Name="MangaSeed" EntityType="Self.MangaSeed" />
+          <EntitySet Name="MangaSeedChapter" EntityType="Self.MangaSeedChapter" />
+          <EntitySet Name="MangaSeedImage" EntityType="Self.MangaSeedImage" />
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -185,74 +186,74 @@ warning 6013: The table/view 'manga.dbo.getcartoon-converted' does not have a pr
           <EntitySetMapping Name="Manga">
             <EntityTypeMapping TypeName="mangaModel.Manga">
               <MappingFragment StoreEntitySet="Manga">
-                <ScalarProperty Name="NameDisplay" ColumnName="NameDisplay" />
-                <ScalarProperty Name="IsEnable" ColumnName="IsEnable" />
-                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="IsEnable" ColumnName="IsEnable" />
+                <ScalarProperty Name="NameDisplay" ColumnName="NameDisplay" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MangaChapter">
             <EntityTypeMapping TypeName="mangaModel.MangaChapter">
               <MappingFragment StoreEntitySet="MangaChapter">
-                <ScalarProperty Name="IsEnable" ColumnName="IsEnable" />
-                <ScalarProperty Name="ChapterImagePath" ColumnName="ChapterImagePath" />
-                <ScalarProperty Name="ChapterName" ColumnName="ChapterName" />
-                <ScalarProperty Name="ChapterId" ColumnName="ChapterId" />
-                <ScalarProperty Name="MangaId" ColumnName="MangaId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MangaId" ColumnName="MangaId" />
+                <ScalarProperty Name="ChapterId" ColumnName="ChapterId" />
+                <ScalarProperty Name="ChapterName" ColumnName="ChapterName" />
+                <ScalarProperty Name="ChapterImagePath" ColumnName="ChapterImagePath" />
+                <ScalarProperty Name="IsEnable" ColumnName="IsEnable" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MangaImage">
             <EntityTypeMapping TypeName="mangaModel.MangaImage">
               <MappingFragment StoreEntitySet="MangaImage">
-                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
-                <ScalarProperty Name="Page" ColumnName="Page" />
-                <ScalarProperty Name="Chapter" ColumnName="Chapter" />
-                <ScalarProperty Name="MangaId" ColumnName="MangaId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MangaId" ColumnName="MangaId" />
+                <ScalarProperty Name="Chapter" ColumnName="Chapter" />
+                <ScalarProperty Name="Page" ColumnName="Page" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MangaSeed">
             <EntityTypeMapping TypeName="mangaModel.MangaSeed">
               <MappingFragment StoreEntitySet="MangaSeed">
-                <ScalarProperty Name="img" ColumnName="img" />
-                <ScalarProperty Name="vip" ColumnName="vip" />
-                <ScalarProperty Name="update" ColumnName="update" />
-                <ScalarProperty Name="hot" ColumnName="hot" />
-                <ScalarProperty Name="new" ColumnName="new" />
-                <ScalarProperty Name="end" ColumnName="end" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="view" ColumnName="view" />
-                <ScalarProperty Name="time" ColumnName="time" />
-                <ScalarProperty Name="release" ColumnName="release" />
-                <ScalarProperty Name="mangaid" ColumnName="mangaid" />
                 <ScalarProperty Name="C_id" ColumnName="_id" />
+                <ScalarProperty Name="mangaid" ColumnName="mangaid" />
+                <ScalarProperty Name="release" ColumnName="release" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="view" ColumnName="view" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="end" ColumnName="end" />
+                <ScalarProperty Name="new" ColumnName="new" />
+                <ScalarProperty Name="hot" ColumnName="hot" />
+                <ScalarProperty Name="update" ColumnName="update" />
+                <ScalarProperty Name="vip" ColumnName="vip" />
+                <ScalarProperty Name="img" ColumnName="img" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MangaSeedChapter">
             <EntityTypeMapping TypeName="mangaModel.MangaSeedChapter">
               <MappingFragment StoreEntitySet="MangaSeedChapter">
-                <ScalarProperty Name="isnew" ColumnName="isnew" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="part" ColumnName="part" />
-                <ScalarProperty Name="mangaid" ColumnName="mangaid" />
                 <ScalarProperty Name="C_id" ColumnName="_id" />
+                <ScalarProperty Name="mangaid" ColumnName="mangaid" />
+                <ScalarProperty Name="part" ColumnName="part" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="isnew" ColumnName="isnew" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MangaSeedImage">
             <EntityTypeMapping TypeName="mangaModel.MangaSeedImage">
               <MappingFragment StoreEntitySet="MangaSeedImage">
-                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
-                <ScalarProperty Name="Page" ColumnName="Page" />
-                <ScalarProperty Name="Chapter" ColumnName="Chapter" />
-                <ScalarProperty Name="MangaId" ColumnName="MangaId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MangaId" ColumnName="MangaId" />
+                <ScalarProperty Name="Chapter" ColumnName="Chapter" />
+                <ScalarProperty Name="Page" ColumnName="Page" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

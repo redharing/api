@@ -8,7 +8,9 @@
         <EntityTypeShape EntityType="mangaModel.Manga" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="mangaModel.MangaChapter" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="mangaModel.MangaImage" Width="1.5" PointX="0.75" PointY="3.75" />
-        <EntityTypeShape EntityType="mangaModel.NewReleaseManga" Width="1.5" PointX="3.375" PointY="3.75" />
+        <EntityTypeShape EntityType="mangaModel.MangaSeed" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="mangaModel.MangaSeedChapter" Width="1.5" PointX="5.75" PointY="5.75" />
+        <EntityTypeShape EntityType="mangaModel.MangaSeedImage" Width="1.5" PointX="0.75" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

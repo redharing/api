@@ -49,7 +49,7 @@ namespace GetMangaSeed
         {
             using (var db = new mangaEntities())
             {
-                db.MangaSeedImages.AddRange(Images);
+                db.MangaSeedImage.AddRange(Images);
                 return db.SaveChanges() > 0;
             }
         }

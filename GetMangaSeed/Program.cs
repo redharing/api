@@ -17,12 +17,12 @@ namespace GetMangaSeed
         {
             using (var db = new mangaEntities())
             {
-                var allM = db.MangaSeeds;
+                var allM = db.MangaSeed.Where(m=>m.C_id > 749);
                 int i = 1;
                 int allManga = allM.Count();
                 foreach (var m in allM)
                 {
-                    var allC = db.MangaSeedChapters.Where(c=>c.mangaid == m.mangaid).OrderBy(c=>c.part);
+                    var allC = db.MangaSeedChapter.Where(c=>c.mangaid == m.mangaid).OrderBy(c=>c.part);
                     var lastC = allC.ToList().Last().part;
                     foreach (var c in allC)
 	                {
@@ -32,8 +32,7 @@ namespace GetMangaSeed
                         image.SaveImage();
                         Console.WriteLine("Get " + m.name + " Chapter  " + c.part + "/" + lastC);
 	                }
-                    
-                   
+                  
                 }
                 db.SaveChanges();
                 Console.WriteLine("Save All success");
