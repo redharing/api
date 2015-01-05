@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="database\manga.sql" />
+    <Content Include="database\script.sql" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
