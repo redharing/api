@@ -4,22 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="mangaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'manga.dbo.getcartoon-converted' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="getcartoon-converted">
-          <Property Name="result__id" Type="varchar" MaxLength="50" />
-          <Property Name="result__release" Type="nvarchar" MaxLength="500" />
-          <Property Name="result__time" Type="varchar" MaxLength="500" />
-          <Property Name="result__view" Type="varchar" MaxLength="50" />
-          <Property Name="result__name" Type="nvarchar" MaxLength="2000" />
-          <Property Name="result__end" Type="bit" />
-          <Property Name="result__new" Type="bit" />
-          <Property Name="result__hot" Type="bit" />
-          <Property Name="result__update" Type="bit" />
-          <Property Name="result__vip" Type="bit" />
-          <Property Name="result__img" Type="varchar" MaxLength="1000" />
-        </EntityType>-->
+    <Schema Namespace="mangaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Manga">
           <Key>
             <PropertyRef Name="Id" />
@@ -78,6 +63,17 @@ warning 6013: The table/view 'manga.dbo.getcartoon-converted' does not have a pr
           <Property Name="name" Type="nvarchar" MaxLength="2000" />
           <Property Name="isnew" Type="varchar" MaxLength="2" />
         </EntityType>
+        <EntityType Name="MangaSeedError">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MangaId" Type="int" Nullable="false" />
+          <Property Name="Chapter" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="Page" Type="int" Nullable="false" />
+          <Property Name="ErrorDetails" Type="text" />
+          <Property Name="StackTrace" Type="text" />
+        </EntityType>
         <EntityType Name="MangaSeedImage">
           <Key>
             <PropertyRef Name="Id" />
@@ -94,10 +90,10 @@ warning 6013: The table/view 'manga.dbo.getcartoon-converted' does not have a pr
           <EntitySet Name="MangaImage" EntityType="Self.MangaImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MangaSeed" EntityType="Self.MangaSeed" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MangaSeedChapter" EntityType="Self.MangaSeedChapter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MangaSeedError" EntityType="Self.MangaSeedError" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MangaSeedImage" EntityType="Self.MangaSeedImage" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="mangaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -176,7 +172,19 @@ warning 6013: The table/view 'manga.dbo.getcartoon-converted' does not have a pr
           <EntitySet Name="MangaSeed" EntityType="Self.MangaSeed" />
           <EntitySet Name="MangaSeedChapter" EntityType="Self.MangaSeedChapter" />
           <EntitySet Name="MangaSeedImage" EntityType="Self.MangaSeedImage" />
+          <EntitySet Name="MangaSeedError" EntityType="mangaModel.MangaSeedError" />
         </EntityContainer>
+        <EntityType Name="MangaSeedError">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MangaId" Type="Int32" Nullable="false" />
+          <Property Name="Chapter" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Page" Type="Int32" Nullable="false" />
+          <Property Name="ErrorDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StackTrace" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -254,6 +262,18 @@ warning 6013: The table/view 'manga.dbo.getcartoon-converted' does not have a pr
                 <ScalarProperty Name="Chapter" ColumnName="Chapter" />
                 <ScalarProperty Name="Page" ColumnName="Page" />
                 <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MangaSeedError">
+            <EntityTypeMapping TypeName="mangaModel.MangaSeedError">
+              <MappingFragment StoreEntitySet="MangaSeedError">
+                <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+                <ScalarProperty Name="ErrorDetails" ColumnName="ErrorDetails" />
+                <ScalarProperty Name="Page" ColumnName="Page" />
+                <ScalarProperty Name="Chapter" ColumnName="Chapter" />
+                <ScalarProperty Name="MangaId" ColumnName="MangaId" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

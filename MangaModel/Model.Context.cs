@@ -31,5 +31,6 @@ namespace MangaModel
         public virtual DbSet<MangaSeed> MangaSeed { get; set; }
         public virtual DbSet<MangaSeedChapter> MangaSeedChapter { get; set; }
         public virtual DbSet<MangaSeedImage> MangaSeedImage { get; set; }
+        public virtual DbSet<MangaSeedError> MangaSeedError { get; set; }
     }
 }

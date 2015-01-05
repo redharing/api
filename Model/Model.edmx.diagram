@@ -11,6 +11,7 @@
         <EntityTypeShape EntityType="mangaModel.MangaSeed" Width="1.5" PointX="5.75" PointY="0.75" />
         <EntityTypeShape EntityType="mangaModel.MangaSeedChapter" Width="1.5" PointX="5.75" PointY="5.75" />
         <EntityTypeShape EntityType="mangaModel.MangaSeedImage" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="mangaModel.MangaSeedError" Width="1.5" PointX="8.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
